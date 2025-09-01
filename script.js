@@ -131,16 +131,22 @@ function createTicTacToeGame() {
       return false;
     };
 
+    // Returns
+    // -1 - if the current position or the position after performing the move is a tie
+    // 0 - if the game continues
+    // 1 - if the current position or the position after performing the move is a win for some player
     const playRound = (row, column) => {
       if (turnCounter > 8) {
         console.log(
           `The gameboard is filled, but no player met the winning condition. It's a tie!`
         );
+        return -1;
       } else if (checkForWin()) {
         const winningPlayer = PlayerController.getCurrentPlayer();
         console.log(
           `The game is won by player ${winningPlayer.name} (token ${winningPlayer.token})!`
         );
+        return 1;
       }
       // Play another round
       else if (makeTurn(row, column)) {
@@ -151,8 +157,12 @@ function createTicTacToeGame() {
           console.log(
             `The player ${player.name} has won the game, delivering a final move with ${player.token}!`
           );
+          return 1;
+        } else if (turnCounter > 8) {
+          return -1;
         } else {
           PlayerController.changePlayer();
+          return 0;
         }
       }
     };
@@ -178,6 +188,7 @@ const ScreenController = (function (doc) {
   const game = createTicTacToeGame();
   const playerDiv = doc.querySelector("#player");
   const boardDiv = doc.querySelector("#board");
+  let gameState = 0; // See playRound in GameController
 
   const createTileButton = (token, row, column) => {
     const tileButton = doc.createElement("button");
@@ -202,7 +213,17 @@ const ScreenController = (function (doc) {
     const board = game.getBoard();
     const currentPlayer = game.getCurrentPlayer();
 
-    playerDiv.textContent = `${currentPlayer.name}'s turn to place ${currentPlayer.token}`;
+    switch (gameState) {
+      case -1: // Tie
+        playerDiv.textContent = `It's a tie!`;
+        break;
+      case 0:
+        playerDiv.textContent = `${currentPlayer.name}'s turn to place ${currentPlayer.token}`;
+        break;
+      case 1:
+        playerDiv.textContent = `${currentPlayer.name} has won the game (playing ${currentPlayer.token})!`;
+        break;
+    }
 
     board.forEach((row, rowIndex) => {
       row.forEach((tile, tileIndex) => {
@@ -217,11 +238,10 @@ const ScreenController = (function (doc) {
     const selectedRow = e.target.dataset.row;
     const selectedColumn = e.target.dataset.column;
     if (!selectedColumn || !selectedRow) {
-      console.log("No element with row and column dataset clicked");
       return;
     }
 
-    game.playRound(selectedRow, selectedColumn);
+    gameState = game.playRound(selectedRow, selectedColumn);
     updateScreen();
   }
 
