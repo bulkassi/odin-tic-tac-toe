@@ -1,0 +1,46 @@
+body {
+  height: 100vh;
+
+  display: flex;
+  flex-direction: column;
+}
+
+#player {
+  flex: 1;
+}
+
+#game {
+  flex: 3;
+
+  display: flex;
+  justify-content: center;
+}
+
+#game #board {
+  height: 60vh;
+  width: 60vh;
+
+  display: grid;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
+
+  background-color: black;
+  gap: 2px;
+}
+
+.tile {
+  background-color: white;
+  border: none;
+}
+
+.nought {
+  background: center / contain no-repeat url("./public/svg/nought.svg"), white;
+}
+
+.tile.cross {
+  background: center / contain no-repeat url("./public/svg/cross.svg"), white;
+}
+
+#options {
+  flex: 1;
+}
