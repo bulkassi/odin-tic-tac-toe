@@ -213,5 +213,18 @@ const ScreenController = (function (doc) {
     });
   };
 
+  function clickBoardHandler(e) {
+    const selectedRow = e.target.dataset.row;
+    const selectedColumn = e.target.dataset.column;
+    if (!selectedColumn || !selectedRow) {
+      console.log("No element with row and column dataset clicked");
+      return;
+    }
+
+    game.playRound(selectedRow, selectedColumn);
+    updateScreen();
+  }
+
+  boardDiv.addEventListener("click", clickBoardHandler);
   updateScreen();
 })(document);
