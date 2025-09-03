@@ -188,6 +188,7 @@ const ScreenController = (function (doc) {
   const game = createTicTacToeGame();
   const playerDiv = doc.querySelector("#player");
   const boardDiv = doc.querySelector("#board");
+  const resetBtn = doc.querySelector("#reset");
   let gameState = 0; // See playRound in GameController
 
   const createTileButton = (token, row, column) => {
@@ -245,6 +246,13 @@ const ScreenController = (function (doc) {
     updateScreen();
   }
 
+  function clickResetBtnHandler(e) {
+    game.reset();
+    gameState = 0;
+    updateScreen();
+  }
+
   boardDiv.addEventListener("click", clickBoardHandler);
+  resetBtn.addEventListener("click", clickResetBtnHandler);
   updateScreen();
 })(document);

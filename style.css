@@ -54,4 +54,19 @@ body {
 
 #options {
   flex: 1;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+}
+
+#options #reset {
+  background-color: cadetblue;
+  border: 1px solid black;
+  color: white;
+
+  padding: 0.3rem;
+
+  font-size: 2rem;
 }
