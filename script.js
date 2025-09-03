@@ -266,11 +266,19 @@ const ScreenController = (function (doc) {
     updateScreen();
   }
 
+  function closeDialogHandler(e) {
+    if (playerNamesDialog.returnValue === "Apply") {
+      game.changePlayerNames(
+        playerOneNameInput.value,
+        playerTwoNameInput.value
+      );
+      updateScreen();
+    }
+  }
+
   function applyBtnHandler(e) {
     e.preventDefault();
-    game.changePlayerNames(playerOneNameInput.value, playerTwoNameInput.value);
-    updateScreen();
-    playerNamesDialog.close(e);
+    playerNamesDialog.close(e.target.value);
   }
 
   function clickOpenDialogBtnHandler(e) {
@@ -279,6 +287,7 @@ const ScreenController = (function (doc) {
 
   boardDiv.addEventListener("click", clickBoardHandler);
   resetBtn.addEventListener("click", clickResetBtnHandler);
+  playerNamesDialog.addEventListener("close", closeDialogHandler);
   openDialogBtn.addEventListener("click", clickOpenDialogBtnHandler);
   applyBtn.addEventListener("click", applyBtnHandler);
   updateScreen();
