@@ -200,6 +200,7 @@ const ScreenController = (function (doc) {
   const playerDiv = doc.querySelector("#player");
   const boardDiv = doc.querySelector("#board");
   const resetBtn = doc.querySelector("#reset");
+  const openDialogBtn = doc.querySelector("#open-dialog");
   const playerNamesDialog = doc.querySelector("#player-name-selection");
   const playerOneNameInput = doc.querySelector("#player-name-first");
   const playerTwoNameInput = doc.querySelector("#player-name-second");
@@ -265,19 +266,20 @@ const ScreenController = (function (doc) {
     updateScreen();
   }
 
-  function dialogCloseHandler(e) {
-    game.changePlayerNames(playerOneNameInput.value, playerTwoNameInput.value);
-    updateScreen();
-  }
-
   function applyBtnHandler(e) {
     e.preventDefault();
+    game.changePlayerNames(playerOneNameInput.value, playerTwoNameInput.value);
+    updateScreen();
     playerNamesDialog.close(e);
+  }
+
+  function clickOpenDialogBtnHandler(e) {
+    playerNamesDialog.showModal();
   }
 
   boardDiv.addEventListener("click", clickBoardHandler);
   resetBtn.addEventListener("click", clickResetBtnHandler);
-  playerNamesDialog.addEventListener("close", dialogCloseHandler);
+  openDialogBtn.addEventListener("click", clickOpenDialogBtnHandler);
   applyBtn.addEventListener("click", applyBtnHandler);
   updateScreen();
 })(document);
