@@ -80,9 +80,11 @@ function createTicTacToeGame() {
 
   const GameController = (function () {
     let turnCounter = 0;
+    let gameState = 0;
 
     const reset = () => {
       turnCounter = 0;
+      gameState = 0;
     };
 
     const makeTurn = (row, column) => {
@@ -140,13 +142,13 @@ function createTicTacToeGame() {
         console.log(
           `The gameboard is filled, but no player met the winning condition. It's a tie!`
         );
-        return -1;
+        gameState = -1;
       } else if (checkForWin()) {
         const winningPlayer = PlayerController.getCurrentPlayer();
         console.log(
           `The game is won by player ${winningPlayer.name} (token ${winningPlayer.token})!`
         );
-        return 1;
+        gameState = 1;
       }
       // Play another round
       else if (makeTurn(row, column)) {
@@ -157,17 +159,19 @@ function createTicTacToeGame() {
           console.log(
             `The player ${player.name} has won the game, delivering a final move with ${player.token}!`
           );
-          return 1;
+          gameState = 1;
         } else if (turnCounter > 8) {
-          return -1;
+          gameState = -1;
         } else {
           PlayerController.changePlayer();
-          return 0;
+          gameState = 0;
         }
       }
     };
 
-    return { playRound, reset };
+    const getGameState = () => gameState;
+
+    return { playRound, getGameState, reset };
   })();
 
   const reset = () => {
@@ -180,6 +184,7 @@ function createTicTacToeGame() {
     getBoard: Gameboard.getBoard,
     getCurrentPlayer: PlayerController.getCurrentPlayer,
     playRound: GameController.playRound,
+    getGameState: GameController.getGameState,
     reset,
   };
 }
@@ -214,7 +219,7 @@ const ScreenController = (function (doc) {
     const board = game.getBoard();
     const currentPlayer = game.getCurrentPlayer();
 
-    switch (gameState) {
+    switch (game.getGameState()) {
       case -1: // Tie
         playerDiv.textContent = `It's a tie!`;
         break;
@@ -248,7 +253,6 @@ const ScreenController = (function (doc) {
 
   function clickResetBtnHandler(e) {
     game.reset();
-    gameState = 0;
     updateScreen();
   }
 
