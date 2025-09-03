@@ -15,6 +15,22 @@
     />
   </head>
   <body>
+    <dialog id="player-name-selection" open>
+      <h1>Enter the players' names</h1>
+      <form method="dialog">
+        <p class="player-name-field">
+          <p class="player-name">First player</p>
+          <input type="text" id="player-name-first" name="player-name-first" required>
+        </p>
+        <p class="player-name-field">
+          <p class="player-name">Second player</p>
+          <input type="text" id="player-name-second" name="player-name-second" required>
+        </p>
+        <p id="form-btns">
+          <input id='apply-btn' type="submit" value="Apply" formmethod="'dialog" formnovalidate>
+        </p>
+      </form>
+    </dialog>
     <div id="player"></div>
     <div id="game">
       <div id="board">

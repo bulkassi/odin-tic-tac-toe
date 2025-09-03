@@ -31,7 +31,12 @@ function createTicTacToeGame() {
 
     const getCurrentPlayer = () => activePlayer;
 
-    return { changePlayer, getCurrentPlayer, reset };
+    function changePlayerNames(playerOneName, playerTwoName) {
+      players[0].name = playerOneName;
+      players[1].name = playerTwoName;
+    }
+
+    return { changePlayer, getCurrentPlayer, changePlayerNames, reset };
   })();
 
   const Gameboard = (function () {
@@ -183,6 +188,7 @@ function createTicTacToeGame() {
   return {
     getBoard: Gameboard.getBoard,
     getCurrentPlayer: PlayerController.getCurrentPlayer,
+    changePlayerNames: PlayerController.changePlayerNames,
     playRound: GameController.playRound,
     getGameState: GameController.getGameState,
     reset,
@@ -194,7 +200,10 @@ const ScreenController = (function (doc) {
   const playerDiv = doc.querySelector("#player");
   const boardDiv = doc.querySelector("#board");
   const resetBtn = doc.querySelector("#reset");
-  let gameState = 0; // See playRound in GameController
+  const playerNamesDialog = doc.querySelector("#player-name-selection");
+  const playerOneNameInput = doc.querySelector("#player-name-first");
+  const playerTwoNameInput = doc.querySelector("#player-name-second");
+  const applyBtn = doc.querySelector("#apply-btn");
 
   const createTileButton = (token, row, column) => {
     const tileButton = doc.createElement("button");
@@ -256,7 +265,19 @@ const ScreenController = (function (doc) {
     updateScreen();
   }
 
+  function dialogCloseHandler(e) {
+    game.changePlayerNames(playerOneNameInput.value, playerTwoNameInput.value);
+    updateScreen();
+  }
+
+  function applyBtnHandler(e) {
+    e.preventDefault();
+    playerNamesDialog.close(e);
+  }
+
   boardDiv.addEventListener("click", clickBoardHandler);
   resetBtn.addEventListener("click", clickResetBtnHandler);
+  playerNamesDialog.addEventListener("close", dialogCloseHandler);
+  applyBtn.addEventListener("click", applyBtnHandler);
   updateScreen();
 })(document);
